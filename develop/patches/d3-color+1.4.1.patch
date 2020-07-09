@@ -1,0 +1,84 @@
+diff --git a/node_modules/d3-color/src/color.js b/node_modules/d3-color/src/color.js
+index 036d9f4..6ee75fb 100644
+--- a/node_modules/d3-color/src/color.js
++++ b/node_modules/d3-color/src/color.js
+@@ -1,4 +1,4 @@
+-import define, {extend} from "./define.js";
++import defineFunc, {extend} from "./define.js";
+ 
+ export function Color() {}
+ 
+@@ -167,7 +167,7 @@ var named = {
+   yellowgreen: 0x9acd32
+ };
+ 
+-define(Color, color, {
++defineFunc(Color, color, {
+   copy: function(channels) {
+     return Object.assign(new this.constructor, this, channels);
+   },
+@@ -239,7 +239,7 @@ export function Rgb(r, g, b, opacity) {
+   this.opacity = +opacity;
+ }
+ 
+-define(Rgb, rgb, extend(Color, {
++defineFunc(Rgb, rgb, extend(Color, {
+   brighter: function(k) {
+     k = k == null ? brighter : Math.pow(brighter, k);
+     return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+@@ -325,7 +325,7 @@ function Hsl(h, s, l, opacity) {
+   this.opacity = +opacity;
+ }
+ 
+-define(Hsl, hsl, extend(Color, {
++defineFunc(Hsl, hsl, extend(Color, {
+   brighter: function(k) {
+     k = k == null ? brighter : Math.pow(brighter, k);
+     return new Hsl(this.h, this.s, this.l * k, this.opacity);
+diff --git a/node_modules/d3-color/src/cubehelix.js b/node_modules/d3-color/src/cubehelix.js
+index bc31659..561ddca 100644
+--- a/node_modules/d3-color/src/cubehelix.js
++++ b/node_modules/d3-color/src/cubehelix.js
+@@ -1,4 +1,4 @@
+-import define, {extend} from "./define.js";
++import defineFunc, {extend} from "./define.js";
+ import {Color, rgbConvert, Rgb, darker, brighter} from "./color.js";
+ import {deg2rad, rad2deg} from "./math.js";
+ 
+@@ -36,7 +36,7 @@ export function Cubehelix(h, s, l, opacity) {
+   this.opacity = +opacity;
+ }
+ 
+-define(Cubehelix, cubehelix, extend(Color, {
++defineFunc(Cubehelix, cubehelix, extend(Color, {
+   brighter: function(k) {
+     k = k == null ? brighter : Math.pow(brighter, k);
+     return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+diff --git a/node_modules/d3-color/src/lab.js b/node_modules/d3-color/src/lab.js
+index b27196e..b3f21fd 100644
+--- a/node_modules/d3-color/src/lab.js
++++ b/node_modules/d3-color/src/lab.js
+@@ -1,4 +1,4 @@
+-import define, {extend} from "./define.js";
++import defineFunc, {extend} from "./define.js";
+ import {Color, rgbConvert, Rgb} from "./color.js";
+ import {deg2rad, rad2deg} from "./math.js";
+ 
+@@ -42,7 +42,7 @@ export function Lab(l, a, b, opacity) {
+   this.opacity = +opacity;
+ }
+ 
+-define(Lab, lab, extend(Color, {
++defineFunc(Lab, lab, extend(Color, {
+   brighter: function(k) {
+     return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+   },
+@@ -110,7 +110,7 @@ function hcl2lab(o) {
+   return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+ }
+ 
+-define(Hcl, hcl, extend(Color, {
++defineFunc(Hcl, hcl, extend(Color, {
+   brighter: function(k) {
+     return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+   },
