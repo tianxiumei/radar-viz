@@ -38,16 +38,15 @@ export default class VisualizationStore extends VisualizationBase {
       }
   }
 
-  getData(dataset:IDataset,metrics:string[],bucket:string){
+  getData(dataset:IDataset,metric:string,bucket:string){
      const {rows,fields}=dataset
+     const metricFieldIndex=findIndex(fields,(field)=>field.name===metric)
      const bucketFieldIndex=findIndex(fields,(field)=>field.name===bucket)
      return rows.map((row)=>{
-       const result={[bucket]:row[bucketFieldIndex],}
-        metrics.forEach((metric:string)=>{
-        const metricFieldIndex=findIndex(fields,(field)=>field.name===metric)
-        result[metric]=row[metricFieldIndex]
-       })
-       return result
+       return {
+        [bucket]:row[bucketFieldIndex],
+        [metric]:row[metricFieldIndex]
+       }
      })
   }
 
@@ -55,11 +54,12 @@ export default class VisualizationStore extends VisualizationBase {
   updateView(dataset: IDataset, config: IKeyValues) {
     const { DataView } = DataSet;
     const { rows,fields } = dataset;
-    const { metric,bucket,maxIndicators,metrics} = config;
+    console.log(dataset)
+    const { metric,bucket,maxIndicators} = config;
     if (!metric ||  !rows.length||!bucket) {
       return;
     }
-    const realData=this.getData(dataset,metrics,bucket)
+    const realData=this.getData(dataset,metric,bucket)
     const metricIndex=findIndex(fields,(field)=>field.name===metric)
     const metricData=rows.map(line => line[metricIndex]||0)
     const dataMax = max(metricData)
@@ -67,7 +67,7 @@ export default class VisualizationStore extends VisualizationBase {
     const dv = new DataView().source(realData.slice(0,maxIndicators?maxIndicators:10));
     dv.transform({
       type: 'fold',
-      fields: metrics?metrics:[], // 展开字段集
+      fields: [metric], // 展开字段集
       key: 'user', // key字段
       value: 'data', // value字段
     });
@@ -128,9 +128,6 @@ export default class VisualizationStore extends VisualizationBase {
     fillOpacity: 1,
   }).label('data', (value)=>{  return this.getLabel(value,config.colors)});
     this.radar.area().position(`${bucket}*data`).color('user');
-    this.radar.legend(bucket, {
-      position: 'top',
-    }); 
     this.radar.render();
   }
 }
