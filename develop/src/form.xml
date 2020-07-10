@@ -1,7 +1,7 @@
 <form>
   <collapse accordion="true">
     <panel title="常规">
-      <input type="dropdown" field="metric" required="true">
+      <input type="multiselect" field="metrics" required="true">
         <label>统计指标</label>
         <dataset>fields</dataset>
       </input>

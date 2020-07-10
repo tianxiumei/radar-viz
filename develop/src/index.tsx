@@ -1,6 +1,6 @@
-import { findIndex, max, min } from 'lodash';
-import DataSet from '@antv/data-set';
+import { findIndex, max, min, flatten} from 'lodash';
 import { Chart } from '@antv/g2';
+import DataSet from '@antv/data-set';
 import {
   VisualizationBase,
   IKeyValues,
@@ -12,10 +12,6 @@ import { IColors, DefaultColors } from './constants';
 
 import "./styles.less";
 
-
-
-
-
 export default class VisualizationStore extends VisualizationBase {
   radar: Chart | null = null;
 
@@ -25,8 +21,6 @@ export default class VisualizationStore extends VisualizationBase {
       count: 10000
     };
   }
-
- 
 
   getLabel(value:any,colors:IColors){
   const color=getItemColor(value,colors)
@@ -38,36 +32,46 @@ export default class VisualizationStore extends VisualizationBase {
       }
   }
 
-  getData(dataset:IDataset,metric:string,bucket:string){
+  getData(dataset:IDataset,metrics:string[],bucket:string){
      const {rows,fields}=dataset
-     const metricFieldIndex=findIndex(fields,(field)=>field.name===metric)
      const bucketFieldIndex=findIndex(fields,(field)=>field.name===bucket)
      return rows.map((row)=>{
-       return {
-        [bucket]:row[bucketFieldIndex],
-        [metric]:row[metricFieldIndex]
+       const result={
+        [`bucket-${bucket}`]:row[bucketFieldIndex],
        }
+       metrics.forEach((metric)=>{
+        const metricFieldIndex=findIndex(fields,(field)=>field.name===metric)
+        result[metric]=row[metricFieldIndex]
+       })
+       return result
      })
   }
 
-
   updateView(dataset: IDataset, config: IKeyValues) {
-    const { DataView } = DataSet;
     const { rows,fields } = dataset;
-    console.log(dataset)
-    const { metric,bucket,maxIndicators,showGrid,indicatorFontSize,showScale,indicatorOffset,indicatorRotatet,showColor,lineSize,legend_position,gridShap,stroke,lineWidth,lineColors} = config;
-    if (!metric ||  !rows.length||!bucket) {
+    const { DataView } = DataSet;
+    const { metrics,bucket,maxIndicators,indicatorOffset,
+      indicatorRotatet,indicatorFontSize,showGrid,showScale,
+      gridShap,stroke,lineWidth,legend_position,lineColors,
+      lineSize,showColor} = config;
+    if (!metrics ||  !rows.length||!bucket) {
       return;
     }
-    const realData=this.getData(dataset,metric,bucket)
-    const metricIndex=findIndex(fields,(field)=>field.name===metric)
-    const metricData=rows.map(line => line[metricIndex]||0)
-    const dataMax = max(metricData)
-    const dataMin = min(metricData)
+    const realData=this.getData(dataset,metrics,bucket)
+    const metricData=rows.map(line => {
+         const data=[] as any
+         metrics.forEach((metric:string) => {
+          const metricIndex=findIndex(fields,(field)=>field.name===metric)
+          data.push(line[metricIndex]||0)
+         });
+      return data
+    })
+    const dataMax = max(flatten(metricData))
+    const dataMin = min(flatten(metricData))
     const dv = new DataView().source(realData.slice(0,maxIndicators?maxIndicators:10));
     dv.transform({
       type: 'fold',
-      fields: [metric], // 展开字段集
+      fields: metrics&&metrics.length>0?metrics:[], // 展开字段集
       key: 'user', // key字段
       value: 'data', // value字段
     });
@@ -79,8 +83,8 @@ export default class VisualizationStore extends VisualizationBase {
     });
     this.radar.data(dv.rows);
     this.radar.scale('data', {
-      min: dataMin,
-      max: dataMax,
+      max:dataMax,
+      min:dataMin
     });
     this.radar.coordinate('polar', {
       radius: 0.8,
@@ -97,7 +101,7 @@ export default class VisualizationStore extends VisualizationBase {
         },
       }
     });
-    this.radar.axis(bucket, {
+    this.radar.axis(`bucket-${bucket}`, {
       line: null,
       tickLine: null,
       label:{
@@ -120,7 +124,7 @@ export default class VisualizationStore extends VisualizationBase {
       tickLine: null,
       label:{
         formatter:(text:string)=>{
-          return showScale&&showScale==='false'?'':text
+          return !showScale||showScale==='false'?'':text
         }
       },
       grid: {
@@ -140,16 +144,18 @@ export default class VisualizationStore extends VisualizationBase {
      
     this.radar
     .line()
-    .position(`${bucket}*data`) 
-    .color('user',()=>{
-      return lineColors?lineColors.split(',')[0]:DefaultColors[0]
+    .position(`bucket-${bucket}*data`) 
+    .color('user',(field:string)=>{
+      const fieldIndex=findIndex(metrics,(item)=>item===field)
+      return lineColors&&lineColors.length>fieldIndex?lineColors.split(',')[fieldIndex]:DefaultColors[fieldIndex%DefaultColors.length]
     })
     .size(lineSize?lineSize:2) 
     .label('value');
     this.radar.point()
-    .position(`${bucket}*data`) 
-    .color('user',()=>{
-      return lineColors?lineColors.split(',')[0]:DefaultColors[0]
+    .position(`bucket-${bucket}*data`) 
+    .color('user',(field)=>{
+      const fieldIndex=findIndex(metrics,(item)=>item===field)
+      return lineColors&&lineColors.length>fieldIndex?lineColors.split(',')[fieldIndex]:DefaultColors[fieldIndex%DefaultColors.length]
     })
     .shape('circle')
     .size(4)
@@ -159,7 +165,7 @@ export default class VisualizationStore extends VisualizationBase {
     fillOpacity: 1})
     .label('data', (value)=>{  return this.getLabel(value,config.colors)});
     if(showColor==='true'){
-     this.radar.area().position(`${bucket}*data`).color(showColor?'user':'');
+     this.radar.area().position(`bucket-${bucket}*data`).color(showColor?'user':'');
     }
     this.radar.render();
   }

@@ -3,7 +3,7 @@ import { FieldDataItem, IField } from "@qn-pandora/visualization-sdk";
 export const DefaultSplits = [
     {
       number: 30,
-      color: '#FF0077',
+      color: '#1C7BDC',
     },
     {
       number: 60,
@@ -11,7 +11,7 @@ export const DefaultSplits = [
     },
     {
       number: 100,
-      color: '#1C7BDC',
+      color: '#FF0077',
     },
   ]
 
