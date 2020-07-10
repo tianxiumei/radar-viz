@@ -9,6 +9,12 @@
         <label>分组</label>
         <dataset>fields</dataset>
       </input>
+      <input type="radio" field="type">
+        <label>类型</label>
+        <initial-value>bucket</initial-value>
+        <choice value="bucket">分组</choice>
+        <choice value="metric">指标</choice>
+      </input>
       <input type="radio" field="showScale">
         <label>是否显示刻度</label>
         <initial-value>false</initial-value>

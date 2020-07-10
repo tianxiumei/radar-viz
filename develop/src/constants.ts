@@ -63,3 +63,8 @@ export const DefaultSplits = [
     min:number
     splitters:ISplitter[]
   }
+
+  export enum Type{
+    BUCKET='bucket',
+    METRIC='metric'
+  }
