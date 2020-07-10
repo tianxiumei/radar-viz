@@ -8,7 +8,7 @@ import {
   IDataset,
 } from "@qn-pandora/visualization-sdk";
 import { getItemColor } from './untils';
-import { IColors } from './constants';
+import { IColors, DefaultColors } from './constants';
 
 import "./styles.less";
 
@@ -55,7 +55,7 @@ export default class VisualizationStore extends VisualizationBase {
     const { DataView } = DataSet;
     const { rows,fields } = dataset;
     console.log(dataset)
-    const { metric,bucket,maxIndicators} = config;
+    const { metric,bucket,maxIndicators,showGrid,indicatorFontSize,showScale,indicatorOffset,indicatorRotatet,showColor,lineSize,legend_position,gridShap,stroke,lineWidth,lineColors} = config;
     if (!metric ||  !rows.length||!bucket) {
       return;
     }
@@ -100,34 +100,67 @@ export default class VisualizationStore extends VisualizationBase {
     this.radar.axis(bucket, {
       line: null,
       tickLine: null,
-      grid: {
+      label:{
+        offset:indicatorOffset?indicatorOffset:0,
+         rotate:indicatorRotatet?indicatorRotatet:0,
+        style:{
+         fontSize:indicatorFontSize?indicatorFontSize:12
+        }
+      },
+      grid: showGrid&&showGrid==='true'?{
         line: {
           style: {
             lineDash: null,
           },
         },
-      },
+      }:null,
     });
     this.radar.axis('data', {
       line: null,
       tickLine: null,
+      label:{
+        formatter:(text:string)=>{
+          return showScale&&showScale==='false'?'':text
+        }
+      },
       grid: {
         line: {
-          type: 'line',
+          type: gridShap?gridShap:'line',
           style: {
             lineDash: null,
+            stroke:stroke?stroke:'rgba(0, 0, 0, 0.65)',
+            lineWidth:lineWidth?lineWidth:1
           },
         },
       },
     });
-
-    this.radar.line().position(`${bucket}*data`).color('user').size(2).label('value');
-    this.radar.point().position(`${bucket}*data`).color('user').shape('circle').size(4).style({
+    this.radar.legend({ 
+      position: legend_position?legend_position:'right', // 设置图例的显示位置
+    });
+     
+    this.radar
+    .line()
+    .position(`${bucket}*data`) 
+    .color('user',()=>{
+      return lineColors?lineColors.split(',')[0]:DefaultColors[0]
+    })
+    .size(lineSize?lineSize:2) 
+    .label('value');
+    this.radar.point()
+    .position(`${bucket}*data`) 
+    .color('user',()=>{
+      return lineColors?lineColors.split(',')[0]:DefaultColors[0]
+    })
+    .shape('circle')
+    .size(4)
+    .style({
     stroke: '#fff',
     lineWidth: 1,
-    fillOpacity: 1,
-  }).label('data', (value)=>{  return this.getLabel(value,config.colors)});
-    this.radar.area().position(`${bucket}*data`).color('user');
+    fillOpacity: 1})
+    .label('data', (value)=>{  return this.getLabel(value,config.colors)});
+    if(showColor==='true'){
+     this.radar.area().position(`${bucket}*data`).color(showColor?'user':'');
+    }
     this.radar.render();
   }
 }

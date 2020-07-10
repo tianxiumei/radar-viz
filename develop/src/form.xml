@@ -9,9 +9,11 @@
         <label>分组</label>
         <dataset>fields</dataset>
       </input>
-      <input type="number" field="maxIndicators">
-        <label>指示器最大数量</label>
-        <initial-value>10</initial-value>
+      <input type="radio" field="showScale">
+        <label>是否显示刻度</label>
+        <initial-value>false</initial-value>
+        <choice value="false">否</choice>
+        <choice value="true">是</choice>
       </input>
     </panel>
     <panel title="图例">
@@ -24,9 +26,64 @@
         <choice value="bottom">下</choice>
       </input>
     </panel>
-     <panel title="颜色">
-     <input type='color-splitter' field="colors">
-        <label>颜色</label>
+    <panel title="网格线">
+      <input type="radio" field="showGrid">
+        <label>是否显示网格线</label>
+        <initial-value>false</initial-value>
+        <choice value="false">否</choice>
+        <choice value="true">是</choice>
+      </input>
+       <input type="dropdown" field="gridShap">
+        <label>形状</label>
+        <initial-value>line</initial-value>
+        <choice value="line">多边形</choice>
+        <choice value="circle">圆形</choice>
+      </input>
+      <input type='color' field="stroke">
+        <initial-value>#7a869a</initial-value>
+        <label>线颜色</label>
+      </input>
+      <input type='number' field="lineWidth">
+        <initial-value>1</initial-value>
+        <label>线宽度</label>
+      </input>
+    </panel>
+     <panel title="线条">
+      <input type='color-splitter' field="colors">
+        <label>字体颜色</label>
+      </input>
+      <input type="text" field="lineColors">
+        <explain>按照指标顺序，用逗号隔开</explain>
+        <label>线条颜色</label>
+      </input>
+      <input type='number' field="lineSize">
+        <label>线尺寸</label>
+      </input>
+     </panel>
+     <panel title="区域">
+      <input type="radio" field="showColor">
+        <label>是否显示颜色</label>
+        <initial-value>false</initial-value>
+        <choice value="false">否</choice>
+        <choice value="true">是</choice>
+      </input>
+    </panel>
+    <panel title="指示器">
+     <input type="number" field="maxIndicators">
+        <label>指示器最大数量</label>
+        <initial-value>10</initial-value>
+      </input>
+      <input type="number" field="indicatorOffset">
+        <label>标签偏移量</label>
+        <initial-value>10</initial-value>
+      </input>
+      <input type="number" field="indicatorRotatet">
+        <label>标签旋转角度</label>
+        <initial-value>0</initial-value>
+      </input>
+      <input type="number" field="indicatorFontSize">
+        <label>标签旋转字体大小</label>
+        <initial-value>12</initial-value>
       </input>
     </panel>
   </collapse>
