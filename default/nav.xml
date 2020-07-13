@@ -1,3 +1,4 @@
 <nav>
   <view name="chart" label="自定义图表效果预览" asset="chart.xml"/>
+  <view name="help" label="帮助" asset="help.xml"/>
 </nav>

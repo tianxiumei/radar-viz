@@ -21,6 +21,15 @@
         <choice value="false">否</choice>
         <choice value="true">是</choice>
       </input>
+      <input type="number" field="maxFields">
+        <label>展示字段数</label>
+        <explain>类型为指标时选择展示字段数量</explain>
+        <initial-value>10</initial-value>  <initial-value>10</initial-value>
+      </input>
+      <input type='number' field="precision">
+        <label>精度</label>
+        <initial-value>2</initial-value>
+      </input>
     </panel>
     <panel title="图例">
       <input type="dropdown" field="legend_position">
@@ -54,12 +63,18 @@
         <label>线宽度</label>
       </input>
     </panel>
-     <panel title="线条">
+     <panel title="数据线">
       <input type='color-splitter' field="colors">
         <label>字体颜色</label>
       </input>
+      <input type="radio" field="showNumber">
+        <label>是否显示数字</label>
+        <initial-value>false</initial-value>
+        <choice value="false">否</choice>
+        <choice value="true">是</choice>
+      </input>
       <input type="text" field="lineColors">
-        <explain>按照指标顺序，用逗号隔开</explain>
+        <explain>按照指标或者分组值的顺序，用逗号隔开</explain>
         <label>线条颜色</label>
       </input>
       <input type='number' field="lineSize">
@@ -90,6 +105,12 @@
       <input type="number" field="indicatorFontSize">
         <label>标签旋转字体大小</label>
         <initial-value>12</initial-value>
+      </input>
+       <input type="number" field="dataMax">
+        <label>指示器最大值</label>
+      </input>
+       <input type="number" field="dataMin">
+        <label>指示器最小值</label>
       </input>
     </panel>
   </collapse>

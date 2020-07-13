@@ -1,1 +1,164 @@
-<text>配置相关图表的 xml 来展示该图表</text>
+<dashboard
+  theme="$operationBarToken.theme$"
+  time="$operationBarToken.time$"
+  refresh-interval="$operationBarToken.refreshInterval$"
+>
+  <operation-bar token="operationBarToken">
+    <title>雷达图</title>
+    <initial-value>
+      <theme>light</theme>
+      <refresh-interval>s30</refresh-interval>
+      <time>
+        <earliest>allTime</earliest>
+      </time>
+    </initial-value>
+  </operation-bar>
+  <grid-layout gap-x="10" gap-y="10" cols="48" row-height="30">
+    <layout left="0" top="0" width="24" height="10">
+      <chart type="radar">
+        <search>
+          <query>sourcetype="radar"</query>
+        </search>
+        <title>
+          <name>分组雷达图</name>
+        </title>
+        <hide-header>false</hide-header>
+        <operation>
+          <hide>false</hide>
+        </operation>
+        <option name="style.metrics">["a", "b", "c"]</option>
+        <option name="style.bucket">item</option>
+        <option name="style.type">bucket</option>
+        <option name="style.showScale">false</option>
+        <option name="style.maxFields">5</option>
+        <option name="style.precision">2</option>
+        <option name="style.legend_position">top</option>
+        <option name="style.showGrid">true</option>
+        <option name="style.gridShap">line</option>
+        <option name="style.stroke">#7a869a</option>
+        <option name="style.lineWidth">1</option>
+        <option name="style.showNumber">false</option>
+        <option name="style.lineSize">1</option>
+        <option name="style.showColor">false</option>
+        <option name="style.maxIndicators">10</option>
+        <option name="style.indicatorOffset">10</option>
+        <option name="style.indicatorRotatet">0</option>
+        <option name="style.indicatorFontSize">12</option>
+        <option name="style.buckets">[]</option>
+        <option name="style.fields">
+          [{"key": "a", "name": "a"}, {"key": "b", "name": "b"}, {"key": "item", "name": "item"}, {"key": "c", "name": "c"}, {"key": "_raw", "name": "_raw"}, {"key": "origin", "name": "origin"}, {"key": "repo", "name": "repo"}, {"key": "host", "name": "host"}, {"key": "sourcetype", "name": "sourcetype"}, {"key": "_time", "name": "_time", "fieldType": "Time"}, {"key": "_indexTime", "name": "_indexTime"}]
+        </option>
+      </chart>
+    </layout>
+    <layout left="24" top="0" width="24" height="10">
+      <chart type="radar">
+        <search>
+          <query>sourcetype="radar"</query>
+        </search>
+        <title>
+          <name>指标雷达图</name>
+        </title>
+        <hide-header>false</hide-header>
+        <operation>
+          <hide>false</hide>
+        </operation>
+        <option name="style.metrics">["a", "b", "c"]</option>
+        <option name="style.bucket">item</option>
+        <option name="style.type">metric</option>
+        <option name="style.showScale">false</option>
+        <option name="style.maxFields">10</option>
+        <option name="style.precision">2</option>
+        <option name="style.legend_position">top</option>
+        <option name="style.showGrid">true</option>
+        <option name="style.gridShap">line</option>
+        <option name="style.stroke">#7a869a</option>
+        <option name="style.lineWidth">1</option>
+        <option name="style.showNumber">false</option>
+        <option name="style.lineSize">1</option>
+        <option name="style.showColor">false</option>
+        <option name="style.maxIndicators">10</option>
+        <option name="style.indicatorOffset">10</option>
+        <option name="style.indicatorRotatet">0</option>
+        <option name="style.indicatorFontSize">12</option>
+        <option name="style.buckets">[]</option>
+        <option name="style.fields">
+          [{"key": "a", "name": "a"}, {"key": "b", "name": "b"}, {"key": "item", "name": "item"}, {"key": "c", "name": "c"}, {"key": "_raw", "name": "_raw"}, {"key": "origin", "name": "origin"}, {"key": "repo", "name": "repo"}, {"key": "host", "name": "host"}, {"key": "sourcetype", "name": "sourcetype"}, {"key": "_time", "name": "_time", "fieldType": "Time"}, {"key": "_indexTime", "name": "_indexTime"}]
+        </option>
+      </chart>
+    </layout>
+    <layout left="0" top="10" width="24" height="10">
+      <chart type="radar">
+        <search>
+          <query>sourcetype="radar"</query>
+        </search>
+        <title>
+          <name>分组显示数值，自定义颜色</name>
+        </title>
+        <hide-header>false</hide-header>
+        <operation>
+          <hide>false</hide>
+        </operation>
+        <option name="style.metrics">["a", "b", "c"]</option>
+        <option name="style.bucket">item</option>
+        <option name="style.type">bucket</option>
+        <option name="style.showScale">false</option>
+        <option name="style.maxFields">10</option>
+        <option name="style.precision">2</option>
+        <option name="style.legend_position">top</option>
+        <option name="style.showGrid">true</option>
+        <option name="style.gridShap">line</option>
+        <option name="style.stroke">#7a869a</option>
+        <option name="style.lineWidth">1</option>
+        <option name="style.colors.splitters">
+          [{"number": 60, "color": "#1C7BDC"}, {"number": 80, "color": "#FFC235"}, {"number": 100, "color": "#ef5350"}]
+        </option>
+        <option name="style.showNumber">true</option>
+        <option name="style.lineSize">1</option>
+        <option name="style.showColor">false</option>
+        <option name="style.maxIndicators">5</option>
+        <option name="style.indicatorOffset">10</option>
+        <option name="style.indicatorRotatet">0</option>
+        <option name="style.indicatorFontSize">12</option>
+        <option name="style.buckets">[]</option>
+        <option name="style.fields">
+          [{"key": "a", "name": "a"}, {"key": "b", "name": "b"}, {"key": "item", "name": "item"}, {"key": "c", "name": "c"}, {"key": "_raw", "name": "_raw"}, {"key": "origin", "name": "origin"}, {"key": "repo", "name": "repo"}, {"key": "host", "name": "host"}, {"key": "sourcetype", "name": "sourcetype"}, {"key": "_time", "name": "_time", "fieldType": "Time"}, {"key": "_indexTime", "name": "_indexTime"}]
+        </option>
+      </chart>
+    </layout>
+    <layout left="24" top="10" width="24" height="10">
+      <chart type="radar">
+        <search>
+          <query>sourcetype="radar"</query>
+        </search>
+        <title>
+          <name>自定义</name>
+        </title>
+        <hide-header>false</hide-header>
+        <operation>
+          <hide>false</hide>
+        </operation>
+        <option name="style.metrics">["a", "b", "c"]</option>
+        <option name="style.bucket">item</option>
+        <option name="style.type">bucket</option>
+        <option name="style.showScale">false</option>
+        <option name="style.maxFields">10</option>
+        <option name="style.precision">2</option>
+        <option name="style.legend_position">top</option>
+        <option name="style.showGrid">true</option>
+        <option name="style.gridShap">circle</option>
+        <option name="style.stroke">#7a869a</option>
+        <option name="style.lineWidth">2</option>
+        <option name="style.showNumber">true</option>
+        <option name="style.showColor">true</option>
+        <option name="style.maxIndicators">5</option>
+        <option name="style.indicatorOffset">10</option>
+        <option name="style.indicatorRotatet">0</option>
+        <option name="style.indicatorFontSize">12</option>
+        <option name="style.buckets">[]</option>
+        <option name="style.fields">
+          [{"key": "a", "name": "a"}, {"key": "b", "name": "b"}, {"key": "item", "name": "item"}, {"key": "c", "name": "c"}, {"key": "_raw", "name": "_raw"}, {"key": "origin", "name": "origin"}, {"key": "repo", "name": "repo"}, {"key": "host", "name": "host"}, {"key": "sourcetype", "name": "sourcetype"}, {"key": "_time", "name": "_time", "fieldType": "Time"}, {"key": "_indexTime", "name": "_indexTime"}]
+        </option>
+      </chart>
+    </layout>
+  </grid-layout>
+</dashboard>
